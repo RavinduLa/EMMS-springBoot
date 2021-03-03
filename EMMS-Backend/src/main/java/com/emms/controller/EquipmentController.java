@@ -38,9 +38,9 @@ public class EquipmentController {
 		
 	}
 	
-	@GetMapping("/getequipmentById/{id}")
-	public Optional<Equipment>  getEqipmentById(@PathVariable int assetid) {
-		Optional<Equipment> equipment = equipmentrepo.findById( assetid);
+	@GetMapping(value="/getEquipmentById/{id}")
+	public Optional<Equipment>  getEqipmentById(@PathVariable int id) {
+		Optional<Equipment> equipment = equipmentrepo.findById( id);
 
 		System.out.println("Returning equipment for id");
 		System.out.println(equipment.toString());
@@ -79,6 +79,13 @@ public class EquipmentController {
 		//equipmentrepo.save(newEquipment);
 	}
 	
+	@PostMapping("updateEquipment")
+	public Equipment updateEquipment(@RequestBody Equipment newEquipment) {
+		System.out.println("updating equipment");
+		return equipmentrepo.save(newEquipment);
+		//equipmentrepo.save(newEquipment);
+	}
+	
 	/*
 	 * @DeleteMapping("deleteEquipment") //@PostMapping("deleteEquipment") public
 	 * int deleteById(@RequestBody Equipment equipment) {
@@ -94,5 +101,15 @@ public class EquipmentController {
 		equipmentrepo.deleteById(id);
 		return id;
 	}
+	
+	@GetMapping(value = "assetCount")
+	public long getAssetCount() {
+		long count = equipmentrepo.count();
+		System.out.println("Equipment count: " + count);
+		return count;
+		
+		
+	}
+
 
 }
