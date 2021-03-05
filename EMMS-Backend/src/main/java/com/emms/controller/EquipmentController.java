@@ -38,8 +38,9 @@ public class EquipmentController {
 		
 	}
 	
+	//pathvariable was int
 	@GetMapping(value="/getEquipmentById/{id}")
-	public Optional<Equipment>  getEqipmentById(@PathVariable int id) {
+	public Optional<Equipment>  getEquipmentById(@PathVariable long id) {
 		Optional<Equipment> equipment = equipmentrepo.findById( id);
 
 		System.out.println("Returning equipment for id");
@@ -55,7 +56,7 @@ public class EquipmentController {
 	//returns true if id is available
 	//else returns null
 	@GetMapping(value = "/checkIdAvailability/{id}")
-	public boolean getIdAvailability (@PathVariable int id) {
+	public boolean getIdAvailability (@PathVariable long id) {
 		
 		
 		Optional<Equipment> e = equipmentrepo.findById(id);
@@ -75,6 +76,7 @@ public class EquipmentController {
 	@PostMapping("addEquipment")
 	public Equipment addEquipment(@RequestBody Equipment newEquipment) {
 		System.out.println("saving equipment");
+		System.out.println(newEquipment.toString());
 		return equipmentrepo.save(newEquipment);
 		//equipmentrepo.save(newEquipment);
 	}
@@ -96,7 +98,7 @@ public class EquipmentController {
 	 */
 	
 	@DeleteMapping(value="/deleteEquipment/{id}")
-	public int deleteById(@PathVariable int id) {
+	public long deleteById(@PathVariable long id) {
 		System.out.println("deleting equipment " + id);
 		equipmentrepo.deleteById(id);
 		return id;

@@ -13,7 +13,7 @@ public class Equipment {
 	
 	@Id
 	@Column(name="asset_id")
-	private int assetId;
+	private long assetId;
 	
 	@Column(name="serial_number")
 	private String serialNumber;
@@ -23,6 +23,9 @@ public class Equipment {
 	
 	@Column(name="location")
 	private String location;
+	
+	@Column(name="department")
+	private String department;
 	
 	@Column(name="brand")
 	private String brand;
@@ -37,28 +40,49 @@ public class Equipment {
 	@Column(name="warranty_months")
 	private int warrantyMonths;
 	
-	public Equipment() {
-		
-	}
-
-	public Equipment(int assetId, String serialNUmber, String type, String location, String brand, String model,
-			Date purchaseDate, int warrantyMonths) {
+	@Column(name="purchase_order_number")
+	private int purchaseOrderNumber;
+	
+	@Column(name = "ip_address")
+	private String ipAddress;
+	
+	@Column(name = "work_station_id")
+	private String workStationId;
+	
+	public Equipment(long assetId, String serialNumber, String type, String location, String brand, String model,
+			Date purchaseDate, int warrantyMonths, int purchaseOrder, String ipAddress, String workStationId) {
 		super();
 		this.assetId = assetId;
-		this.serialNumber = serialNUmber;
+		this.serialNumber = serialNumber;
 		this.type = type;
 		this.location = location;
 		this.brand = brand;
 		this.model = model;
 		this.purchaseDate = purchaseDate;
 		this.warrantyMonths = warrantyMonths;
+		this.purchaseOrderNumber = purchaseOrder;
+		this.ipAddress = ipAddress;
+		this.workStationId = workStationId;
 	}
 
-	public int getAssetId() {
+	public Equipment() {
+		
+	}
+
+	/*
+	 * public Equipment(int assetId, String serialNUmber, String type, String
+	 * location, String brand, String model, Date purchaseDate, int warrantyMonths)
+	 * { super(); this.assetId = assetId; this.serialNumber = serialNUmber;
+	 * this.type = type; this.location = location; this.brand = brand; this.model =
+	 * model; this.purchaseDate = purchaseDate; this.warrantyMonths =
+	 * warrantyMonths; }
+	 */
+
+	public long getAssetId() {
 		return assetId;
 	}
 
-	public void setAssetId(int assetId) {
+	public void setAssetId(long assetId) {
 		this.assetId = assetId;
 	}
 
@@ -117,13 +141,52 @@ public class Equipment {
 	public void setWarrantyMonths(int warrantyMonths) {
 		this.warrantyMonths = warrantyMonths;
 	}
+	
+	
+
+	public int getPurchaseOrderNumber() {
+		return purchaseOrderNumber;
+	}
+
+	public void setPurchaseOrderNumber(int purchaseOrderNumber) {
+		this.purchaseOrderNumber = purchaseOrderNumber;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	public String getWorkStationId() {
+		return workStationId;
+	}
+
+	public void setWorkStationId(String workStationId) {
+		this.workStationId = workStationId;
+	}
+	
+	
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 
 	@Override
 	public String toString() {
-		return "Equipment [assetId=" + assetId + ", serialNUmber=" + serialNumber + ", type=" + type + ", location="
-				+ location + ", brand=" + brand + ", model=" + model + ", purchaseDate=" + purchaseDate
-				+ ", warrantyMonths=" + warrantyMonths + "]";
+		return "Equipment [assetId=" + assetId + ", serialNumber=" + serialNumber + ", type=" + type + ", location="
+				+ location + ", department=" + department + ", brand=" + brand + ", model=" + model + ", purchaseDate="
+				+ purchaseDate + ", warrantyMonths=" + warrantyMonths + ", purchaseOrderNumber=" + purchaseOrderNumber
+				+ ", ipAddress=" + ipAddress + ", workStationId=" + workStationId + "]";
 	}
+	
+	
 	
 	
 
