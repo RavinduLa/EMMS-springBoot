@@ -1,6 +1,6 @@
 package com.emms.model;
 
-import java.util.Arrays;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +16,7 @@ public class Brand {
 	private int brandId;
 	@Column(name="brand_name")
 	private String brandName;
-	@Column(name="categories")
-	private String[] categoryList;
+	
 	
 	public Brand() {
 		
@@ -26,7 +25,6 @@ public class Brand {
 		super();
 		this.brandId = brandId;
 		this.brandName = brandName;
-		this.categoryList = categoryList;
 	}
 	public int getBrandId() {
 		return brandId;
@@ -40,17 +38,12 @@ public class Brand {
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
 	}
-	public String[] getCategoryList() {
-		return categoryList;
-	}
-	public void setCategoryList(String[] categoryList) {
-		this.categoryList = categoryList;
-	}
 	@Override
 	public String toString() {
-		return "Brand [brandId=" + brandId + ", brandName=" + brandName + ", categoryList="
-				+ Arrays.toString(categoryList) + "]";
+		return "Brand [brandId=" + brandId + ", brandName=" + brandName + "]";
 	}
+	
+	
 	
 	
 	

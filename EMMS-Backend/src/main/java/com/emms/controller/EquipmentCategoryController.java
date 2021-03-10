@@ -88,6 +88,25 @@ public class EquipmentCategoryController {
 		return cbRepo.save(cb);
 	}
 	
+	@GetMapping("isCategoryAvailable/{name}")
+	public boolean isNameAvailable(@PathVariable String  name) {
+		
+		List<EquipmentCategories> categoryList = categoryRepo.findAll();
+		
+		
+		for(EquipmentCategories category : categoryList) {
+			String categoryName = category.getCategoryName();
+			if(categoryName.equals(name)) {
+				System.out.println("Category is already in the database. Returning false");
+				return false;
+			}
+		}
+		
+		System.out.println("Category is not in the database. Returning true.");
+		return true;
+		
+	}
+	
 
 
 }
