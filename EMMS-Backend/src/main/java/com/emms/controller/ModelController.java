@@ -76,5 +76,28 @@ public class ModelController {
 			return newId;
 		}
 	}
+	
+	@GetMapping(value="isModelAvailable/{model}")
+	public boolean isModelAvailable(@PathVariable String model) {
+		model = model.toLowerCase();
+		List<Model> modelList = modelRepo.findAll();
+		
+		for(Model m: modelList) {
+			String modelName = m.getModel();
+			modelName.toLowerCase();
+			if(modelName.equals(model)) {
+				System.out.println("Model is already in the database. Returning false");
+				return false;
+			}
+			
+		}
+		
+		System.out.println("Model is not in the database. Returning true.");
+		return true;
+	}
+	
+	public void getModelsForBrands() {
+		
+	}
 
 }

@@ -12,8 +12,8 @@ public class CategoryBrand {
 	@Id
 	@Column(name="id")
 	private int id;
-	@Column(name="type")
-	private String type;
+	@Column(name="category")
+	private String category;
 	@Column(name="brand")
 	private String brand;
 	
@@ -21,10 +21,10 @@ public class CategoryBrand {
 		
 	}
 
-	public CategoryBrand(int id, String type, String brand) {
+	public CategoryBrand(int id, String category, String brand) {
 		super();
 		this.id = id;
-		this.type = type;
+		this.category = category;
 		this.brand = brand;
 	}
 
@@ -36,12 +36,12 @@ public class CategoryBrand {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getBrand() {
@@ -54,8 +54,10 @@ public class CategoryBrand {
 
 	@Override
 	public String toString() {
-		return "CategoryBrand [id=" + id + ", type=" + type + ", brand=" + brand + "]";
+		return "CategoryBrand [id=" + id + ", category=" + category + ", brand=" + brand + "]";
 	}
+
+	
 	
 	
 	

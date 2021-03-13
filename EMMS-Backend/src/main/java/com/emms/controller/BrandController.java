@@ -66,12 +66,13 @@ public class BrandController {
 	
 	@GetMapping("isBrandAvailable/{name}")
 	public boolean isNameAvailable(@PathVariable String  name) {
-		
+		name = name.toLowerCase();
 		List<Brand> brandList = brandRepo.findAll();
 		
 		
 		for(Brand brand : brandList) {
 			String brandName = brand.getBrandName();
+			brandName = brandName.toLowerCase();
 			if(brandName.equals(name)) {
 				System.out.println("Brand is already in the database. Returning false");
 				return false;
