@@ -1,5 +1,7 @@
 package com.emms.controller;
 
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emms.dao.ModelRepo;
-
+import com.emms.model.Brand;
 import com.emms.model.Model;
 
 
@@ -96,7 +98,22 @@ public class ModelController {
 		return true;
 	}
 	
-	public void getModelsForBrands() {
+	@GetMapping(value="getModelsForBrand/{brand}")
+	public List<Model> getModelsForBrands(@PathVariable String brand) {
+		brand = brand.toLowerCase();
+		List<Model> modelList = modelRepo.findAll();
+		List<Model> filteredModelList = new ArrayList<Model>() ;
+		
+		for(Model m : modelList) {
+			String brandName = m.getBrand().toLowerCase();
+			if(brandName.equals(brand)) {
+				filteredModelList.add(m);
+			}
+			
+		}
+		System.out.println("Returning model list foe brand : "+ brand);
+		
+		return filteredModelList;
 		
 	}
 
