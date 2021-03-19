@@ -1,3 +1,4 @@
+//supplier history repo
 package com.emms.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;

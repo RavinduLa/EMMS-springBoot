@@ -1,3 +1,4 @@
+//supplier
 package com.emms.model;
 
 import javax.persistence.Column;

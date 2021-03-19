@@ -1,3 +1,4 @@
+//supplier history
 package com.emms.model;
 
 import java.util.Date;
