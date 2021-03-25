@@ -1,5 +1,7 @@
 package com.emms.controller;
 
+import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emms.archiveDao.SupplierArchiveRepository;
+import com.emms.archiveModels.SupplierArchive;
 import com.emms.dao.EquipmentRepository;
 import com.emms.model.Equipment;
 
@@ -27,6 +31,8 @@ public class EquipmentController {
 	
 	@Autowired
 	private EquipmentRepository equipmentrepo;
+	@Autowired
+	private SupplierArchiveRepository supplierArchiveRepository;
 	
 	@GetMapping("equipment")
 	public List<Equipment> getAllEquipment(){
@@ -34,8 +40,34 @@ public class EquipmentController {
 		String result = equipmentrepo.findAll().toString();
 		System.out.println("Returning all equipment");
 		System.out.println(result);
-		return equipmentrepo.findAll();
+		List<Equipment> equipmentList = new ArrayList<>();
+		equipmentList =  equipmentrepo.findAll();
 		
+		for(Equipment e : equipmentList) {
+			int supplierId  = e.getSupplier();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			e.setSupplierName(supplierName);
+		}
+		
+		return equipmentList;
+		
+	}
+	
+	public String getSupplierNameForDate(int id, Date purchasedate) {
+		List<SupplierArchive> suppliers = supplierArchiveRepository.findByOriginalId(id);
+		String supplierName = "Yet to put";
+		for(SupplierArchive s: suppliers) {
+			Date createdDate = s.getCreatedDate();
+			if(purchasedate.after(createdDate) || purchasedate.equals(createdDate)) {
+				supplierName = s.getSupplieName();
+			}
+			else {
+				System.out.println("Error: there is no created date before or on purchase date");
+			}
+		}
+		
+		return supplierName;
 	}
 	
 	//pathvariable was int

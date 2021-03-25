@@ -19,17 +19,22 @@ public class Supplier {
 	private String  phone;
 	@Column(name = "email")
 	private String email;
+	@Column(name="status")
+	private String status;
 	
 	public Supplier() {
 		
 	}
-	public Supplier(int supplierId, String supplierName, String phone, String email) {
+	
+	public Supplier(int supplierId, String supplierName, String phone, String email, String status) {
 		super();
 		this.supplierId = supplierId;
 		this.supplierName = supplierName;
 		this.phone = phone;
 		this.email = email;
+		this.status = status;
 	}
+
 	public int getSupplierId() {
 		return supplierId;
 	}
@@ -54,10 +59,21 @@ public class Supplier {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Supplier [supplierId=" + supplierId + ", supplierName=" + supplierName + ", phone=" + phone + ", email="
-				+ email + "]";
+				+ email + ", status=" + status + "]";
 	}
+	
 
 }

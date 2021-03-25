@@ -43,24 +43,36 @@ public class Equipment {
 	@Column(name="purchase_order_number")
 	private int purchaseOrderNumber;
 	
+	@Column(name="supplier")
+	private int supplier;
+	
+	
+	private String supplierName;
+	
 	@Column(name = "ip_address")
 	private String ipAddress;
 	
 	@Column(name = "work_station_id")
 	private String workStationId;
 	
-	public Equipment(long assetId, String serialNumber, String type, String location, String brand, String model,
-			Date purchaseDate, int warrantyMonths, int purchaseOrder, String ipAddress, String workStationId) {
+	
+
+	public Equipment(long assetId, String serialNumber, String type, String location, String department, String brand,
+			String model, Date purchaseDate, int warrantyMonths, int purchaseOrderNumber, int supplier,
+			String supplierName, String ipAddress, String workStationId) {
 		super();
 		this.assetId = assetId;
 		this.serialNumber = serialNumber;
 		this.type = type;
 		this.location = location;
+		this.department = department;
 		this.brand = brand;
 		this.model = model;
 		this.purchaseDate = purchaseDate;
 		this.warrantyMonths = warrantyMonths;
-		this.purchaseOrderNumber = purchaseOrder;
+		this.purchaseOrderNumber = purchaseOrderNumber;
+		this.supplier = supplier;
+		this.supplierName = supplierName;
 		this.ipAddress = ipAddress;
 		this.workStationId = workStationId;
 	}
@@ -178,12 +190,32 @@ public class Equipment {
 		this.department = department;
 	}
 
+	
+	public int getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(int supplier) {
+		this.supplier = supplier;
+	}
+	
+	
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
 	@Override
 	public String toString() {
 		return "Equipment [assetId=" + assetId + ", serialNumber=" + serialNumber + ", type=" + type + ", location="
 				+ location + ", department=" + department + ", brand=" + brand + ", model=" + model + ", purchaseDate="
 				+ purchaseDate + ", warrantyMonths=" + warrantyMonths + ", purchaseOrderNumber=" + purchaseOrderNumber
-				+ ", ipAddress=" + ipAddress + ", workStationId=" + workStationId + "]";
+				+ ", supplier=" + supplier + ", supplierName=" + supplierName + ", ipAddress=" + ipAddress
+				+ ", workStationId=" + workStationId + "]";
 	}
 	
 	
