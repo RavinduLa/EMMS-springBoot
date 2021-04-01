@@ -25,7 +25,9 @@ public class Equipment {
 	private String location;
 	
 	@Column(name="department")
-	private String department;
+	private int department;
+	
+	private String departmentName;
 	
 	@Column(name="brand")
 	private String brand;
@@ -57,15 +59,18 @@ public class Equipment {
 	
 	
 
-	public Equipment(long assetId, String serialNumber, String type, String location, String department, String brand,
-			String model, Date purchaseDate, int warrantyMonths, int purchaseOrderNumber, int supplier,
-			String supplierName, String ipAddress, String workStationId) {
+	
+
+	public Equipment(long assetId, String serialNumber, String type, String location, int department,
+			String departmentName, String brand, String model, Date purchaseDate, int warrantyMonths,
+			int purchaseOrderNumber, int supplier, String supplierName, String ipAddress, String workStationId) {
 		super();
 		this.assetId = assetId;
 		this.serialNumber = serialNumber;
 		this.type = type;
 		this.location = location;
 		this.department = department;
+		this.departmentName = departmentName;
 		this.brand = brand;
 		this.model = model;
 		this.purchaseDate = purchaseDate;
@@ -182,11 +187,11 @@ public class Equipment {
 	
 	
 
-	public String getDepartment() {
+	public int getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(int department) {
 		this.department = department;
 	}
 
@@ -208,14 +213,24 @@ public class Equipment {
 	public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
 	}
+	
+	
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
 
 	@Override
 	public String toString() {
 		return "Equipment [assetId=" + assetId + ", serialNumber=" + serialNumber + ", type=" + type + ", location="
-				+ location + ", department=" + department + ", brand=" + brand + ", model=" + model + ", purchaseDate="
-				+ purchaseDate + ", warrantyMonths=" + warrantyMonths + ", purchaseOrderNumber=" + purchaseOrderNumber
-				+ ", supplier=" + supplier + ", supplierName=" + supplierName + ", ipAddress=" + ipAddress
-				+ ", workStationId=" + workStationId + "]";
+				+ location + ", department=" + department + ", departmentName=" + departmentName + ", brand=" + brand
+				+ ", model=" + model + ", purchaseDate=" + purchaseDate + ", warrantyMonths=" + warrantyMonths
+				+ ", purchaseOrderNumber=" + purchaseOrderNumber + ", supplier=" + supplier + ", supplierName="
+				+ supplierName + ", ipAddress=" + ipAddress + ", workStationId=" + workStationId + "]";
 	}
 	
 	

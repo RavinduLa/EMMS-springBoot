@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.emms.archiveDao.DepartmentArchiveRepository;
 import com.emms.archiveDao.SupplierArchiveRepository;
+import com.emms.archiveModels.DepartmentArchive;
 import com.emms.archiveModels.SupplierArchive;
 import com.emms.dao.EquipmentRepository;
 import com.emms.model.Equipment;
@@ -33,6 +35,8 @@ public class EquipmentController {
 	private EquipmentRepository equipmentrepo;
 	@Autowired
 	private SupplierArchiveRepository supplierArchiveRepository;
+	@Autowired
+	private DepartmentArchiveRepository departmentArchiveRepository; 
 	
 	@GetMapping("equipment")
 	public List<Equipment> getAllEquipment(){
@@ -45,9 +49,12 @@ public class EquipmentController {
 		
 		for(Equipment e : equipmentList) {
 			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
 			Date purchaseDate = e.getPurchaseDate();
 			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
 			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
 		}
 		
 		return equipmentList;
@@ -68,6 +75,22 @@ public class EquipmentController {
 		}
 		
 		return supplierName;
+	}
+	
+	public String getDepartmentNameForDate(int id, Date purchasedate) {
+		List<DepartmentArchive> departments = departmentArchiveRepository.findByOriginalId(id);
+		String departmentName = "Yet to put";
+		for (DepartmentArchive d: departments) {
+			Date createdDate = d.getCreatedDate();	
+			if(purchasedate.after(createdDate) || purchasedate.equals(createdDate)) {
+				departmentName = d.getDepartmentName();
+			}
+			else {
+				System.out.println("Error: there is no created date for department before or on purchase date");
+			}
+		}
+		
+		return departmentName;
 	}
 	
 	//pathvariable was int
