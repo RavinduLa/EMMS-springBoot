@@ -62,14 +62,15 @@ public class EquipmentCategoryController {
 		int numberOfCategoriess = allCategories.size();
 		int newId = 0;
 		
-		EquipmentCategories lastEnteredCategory = allCategories.get(numberOfCategoriess-1);
-		int lastId = lastEnteredCategory.getCategoryId();
 		
-		newId = ++lastId;
 		if(allCategories.isEmpty()) {
 			return 1;
 		}
 		else {
+			EquipmentCategories lastEnteredCategory = allCategories.get(numberOfCategoriess-1);
+			int lastId = lastEnteredCategory.getCategoryId();
+			
+			newId = ++lastId;
 			while(newId < lastId) {
 				newId++;
 			}

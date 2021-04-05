@@ -60,7 +60,10 @@ public class DepartmentController {
 		da.setCreatedDate(date);
 		da.setStatus("active");
 		
-		System.out.println("Returnung a department: "+dep );
+		DepartmentArchive daSaved = departmentArchiveRepository.save(da);
+		
+		System.out.println("Saved department : "+dep.toString() );
+		System.out.println("Saved department archive: "+daSaved.toString() );
 		return dep;
 	}
 	
