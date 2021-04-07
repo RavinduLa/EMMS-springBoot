@@ -48,7 +48,7 @@ public class DepartmentController {
 	}
 	
 	@PostMapping("addDepartment")
-	public Department addDepartment(@RequestBody Department department) {
+	public synchronized Department addDepartment(@RequestBody Department department) {
 		department.setStatus("active");
 		Department dep = departmentRepo.save(department);
 		
@@ -68,7 +68,7 @@ public class DepartmentController {
 	}
 	
 	@GetMapping(value="getIdAvailability/{did}")
-	public boolean getAvailability(@PathVariable int did) {
+	public synchronized boolean getAvailability(@PathVariable int did) {
 		Optional<Department> dept = departmentRepo.findById(did);
 		
 		if(dept.isEmpty()) {
@@ -83,7 +83,7 @@ public class DepartmentController {
 	}
 	
 	@DeleteMapping(value= "deleteDepartment/{did}")
-	public int deleteDepartment(@PathVariable int did) {
+	public synchronized int deleteDepartment(@PathVariable int did) {
 		System.out.println("Deleteing department: " + did);
 		
 		Optional<Department> departmentOptional = departmentRepo.findById(did);

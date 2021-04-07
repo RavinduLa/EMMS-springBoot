@@ -110,7 +110,7 @@ public class EquipmentController {
 	//returns true if id is available
 	//else returns null
 	@GetMapping(value = "/checkIdAvailability/{id}")
-	public boolean getIdAvailability (@PathVariable long id) {
+	public synchronized boolean getIdAvailability (@PathVariable long id) {
 		
 		
 		Optional<Equipment> e = equipmentrepo.findById(id);
@@ -128,7 +128,7 @@ public class EquipmentController {
 	}
 	
 	@PostMapping("addEquipment")
-	public Equipment addEquipment(@RequestBody Equipment newEquipment) {
+	public synchronized Equipment addEquipment(@RequestBody Equipment newEquipment) {
 		System.out.println("saving equipment");
 		System.out.println(newEquipment.toString());
 		return equipmentrepo.save(newEquipment);
@@ -136,7 +136,7 @@ public class EquipmentController {
 	}
 	
 	@PostMapping("updateEquipment")
-	public Equipment updateEquipment(@RequestBody Equipment newEquipment) {
+	public synchronized Equipment updateEquipment(@RequestBody Equipment newEquipment) {
 		System.out.println("updating equipment");
 		return equipmentrepo.save(newEquipment);
 		//equipmentrepo.save(newEquipment);
@@ -152,7 +152,7 @@ public class EquipmentController {
 	 */
 	
 	@DeleteMapping(value="/deleteEquipment/{id}")
-	public long deleteById(@PathVariable long id) {
+	public synchronized long deleteById(@PathVariable long id) {
 		System.out.println("deleting equipment " + id);
 		equipmentrepo.deleteById(id);
 		return id;

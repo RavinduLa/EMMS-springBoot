@@ -31,7 +31,7 @@ public class Supplier2Controller {
 	}
 	
 	//@PostMapping(value = "addSupplier")
-	public Supplier2 addSupplier(@RequestBody Supplier2 sup) {
+	public synchronized Supplier2 addSupplier(@RequestBody Supplier2 sup) {
 		Supplier2 sup2 = supplier2Repo.save(sup);
 		return sup2;
 	}
