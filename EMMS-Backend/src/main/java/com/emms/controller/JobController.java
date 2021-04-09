@@ -122,7 +122,7 @@ public class JobController {
 	}
 	
 	@PostMapping(value= "addJob")
-	public Job addJob (@RequestBody Job job) {
+	public synchronized Job addJob (@RequestBody Job job) {
 		job.setJobId(this.generateId());
 		job.setStatus("pending");
 		System.out.println("Saving job : "+ job.toString());

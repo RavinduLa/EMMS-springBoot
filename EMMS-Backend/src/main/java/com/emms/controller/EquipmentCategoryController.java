@@ -49,7 +49,7 @@ public class EquipmentCategoryController {
 	
 	//error mitigated after changing ' value = ' to 'value= ' (removed space)
 	@PostMapping(value= "addCategory")
-	public EquipmentCategories addCategory(@RequestBody EquipmentCategories category) {
+	public synchronized EquipmentCategories addCategory(@RequestBody EquipmentCategories category) {
 		
 		category.setCategoryId(generateId());
 		System.out.println("saving category: " + category.toString());
@@ -62,14 +62,15 @@ public class EquipmentCategoryController {
 		int numberOfCategoriess = allCategories.size();
 		int newId = 0;
 		
-		EquipmentCategories lastEnteredCategory = allCategories.get(numberOfCategoriess-1);
-		int lastId = lastEnteredCategory.getCategoryId();
 		
-		newId = ++lastId;
 		if(allCategories.isEmpty()) {
 			return 1;
 		}
 		else {
+			EquipmentCategories lastEnteredCategory = allCategories.get(numberOfCategoriess-1);
+			int lastId = lastEnteredCategory.getCategoryId();
+			
+			newId = ++lastId;
 			while(newId < lastId) {
 				newId++;
 			}
@@ -78,7 +79,7 @@ public class EquipmentCategoryController {
 	}
 
 	@DeleteMapping(value="deleteCategoryById/{id}")
-	public int deleteCategory(@PathVariable int id) {
+	public synchronized int deleteCategory(@PathVariable int id) {
 		
 		System.out.println("Deleting category with id: " + id);
 		categoryRepo.deleteById(id);
@@ -117,7 +118,7 @@ public class EquipmentCategoryController {
 		
 	}
 	
-	public boolean doesEntryExist (String brand, String category) {
+	public synchronized boolean doesEntryExist (String brand, String category) {
 		List<CategoryBrand> cbList = cbRepo.findAll();
 		
 		for(CategoryBrand cb: cbList) {
@@ -154,7 +155,7 @@ public class EquipmentCategoryController {
 	}
 	
 	@DeleteMapping(value="deleteBrandCategoryById/{id}")
-	public int deleteBrandCategoryById(@PathVariable int id) {
+	public synchronized int deleteBrandCategoryById(@PathVariable int id) {
 		System.out.println("Deleting combo : " + id);
 		cbRepo.deleteById(id);
 		return id;
@@ -167,9 +168,9 @@ public class EquipmentCategoryController {
 		List<Brand> returningBrandList = new ArrayList<Brand>();
 		List<CategoryBrand> cbList = cbRepo.findAll();
 		
-		Brand tempBrand = new Brand();
+		//Brand tempBrand = new Brand();
 		String brandName;
-		int brandId;
+		//int brandId;
 		
 		brandList = brandRepo.findAll();
 		
@@ -192,7 +193,7 @@ public class EquipmentCategoryController {
 	}
 	
 	@GetMapping("isCategoryAvailable/{name}")
-	public boolean isNameAvailable(@PathVariable String  name) {
+	public synchronized boolean isNameAvailable(@PathVariable String  name) {
 		
 		name = name.toLowerCase();
 		List<EquipmentCategories> categoryList = categoryRepo.findAll();

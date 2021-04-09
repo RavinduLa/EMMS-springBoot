@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emms.dao.ModelRepo;
-import com.emms.model.Brand;
+//import com.emms.model.Brand;
 import com.emms.model.Model;
 
 
@@ -43,7 +43,7 @@ public class ModelController {
 	}
 	
 	@PostMapping(value="addModel")
-	public Model addModel(@RequestBody Model  model) {
+	public synchronized Model addModel(@RequestBody Model  model) {
 			
 		model.setModelId(generateId());
 		System.out.println("saving model: " + model.toString());
@@ -51,7 +51,7 @@ public class ModelController {
 			
 	}
 	@DeleteMapping(value="deleteModelById/{id}")
-	public int deleteModel(@PathVariable int id) {
+	public synchronized int deleteModel(@PathVariable int id) {
 		System.out.println("Deleting model: "+ id);
 		modelRepo.deleteById(id);
 		return id;
@@ -80,7 +80,7 @@ public class ModelController {
 	}
 	
 	@GetMapping(value="isModelAvailable/{model}")
-	public boolean isModelAvailable(@PathVariable String model) {
+	public synchronized boolean isModelAvailable(@PathVariable String model) {
 		model = model.toLowerCase();
 		List<Model> modelList = modelRepo.findAll();
 		

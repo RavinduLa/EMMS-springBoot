@@ -2,8 +2,8 @@
 
 package com.emms.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -176,7 +176,7 @@ public class SupplierController {
 	}
 
 	@DeleteMapping(value = "deleteSupplierById/{id}")
-	public Supplier deleteSupplierById(@PathVariable int id) {
+	public synchronized Supplier deleteSupplierById(@PathVariable int id) {
 		Optional<Supplier> supplierOp = supplierRepository.findById(id);
 		Supplier supplier = supplierOp.get();
 		SupplierArchive sa = new SupplierArchive();

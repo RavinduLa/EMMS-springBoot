@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.emms.dao.BrandRepo;
 import com.emms.model.Brand;
-import com.emms.model.EquipmentCategories;
+//import com.emms.model.EquipmentCategories;
 
 @RestController
 @RequestMapping("api/")
@@ -33,7 +33,7 @@ public class BrandController {
 	}
 	
 	@PostMapping(value="addBrand")
-	public Brand addBrand(@RequestBody Brand brand) {
+	public synchronized Brand addBrand(@RequestBody Brand brand) {
 		
 		brand.setBrandId(generateId());
 		Brand brandr  = brandRepo.save(brand);
@@ -65,7 +65,7 @@ public class BrandController {
 	}
 	
 	@GetMapping("isBrandAvailable/{name}")
-	public boolean isNameAvailable(@PathVariable String  name) {
+	public synchronized boolean isNameAvailable(@PathVariable String  name) {
 		name = name.toLowerCase();
 		List<Brand> brandList = brandRepo.findAll();
 		
@@ -97,7 +97,7 @@ public class BrandController {
 	}
 	
 	@DeleteMapping(value="/deleteBrand/{id}")
-	public int deleteById(@PathVariable int id) {
+	public synchronized int deleteById(@PathVariable int id) {
 		System.out.println("deleting equipment " + id);
 		brandRepo.deleteById(id);
 		return id;
