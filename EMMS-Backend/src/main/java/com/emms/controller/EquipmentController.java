@@ -1,7 +1,10 @@
 package com.emms.controller;
 
 import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -166,6 +169,172 @@ public class EquipmentController {
 		
 		
 	}
+	
+	//returns the equipment list based on the given supplier id
+	@GetMapping(value = "getEquipmentForSupplier/{id}")
+	public List<Equipment> getEquipmentBySupplier (@PathVariable int  id){
+		List<Equipment> equipmentList = equipmentrepo.findBySupplier(id);
+		System.out.println("Returning equipments for supplier,  "+ id+ " : ");
+		System.out.println(equipmentList.toString());
+		return equipmentList;
+	}
 
+	//returns equipment based on the given location
+	@GetMapping(value = "getEquipmentForLocation/{location}")
+	public List<Equipment> getEquipmentForLocation(@PathVariable String location){
+		
+		List<Equipment> equipmentList = equipmentrepo.findByLocation(location.toLowerCase());
+		System.out.println("Returning equipments for location,  "+ location+ " : ");
+		System.out.println(equipmentList.toString());
+		return equipmentList;
+	}
+	
+	//returns equipment based on the given department
+	@GetMapping(value = "getEquipmentForDepartment/{dept}")
+	public List<Equipment> getEquipmentForDepartment(@PathVariable int dept){
+		
+		List<Equipment> equipmentList = equipmentrepo.findByDepartment(dept);
+		System.out.println("Returning equipments for department,  "+ dept+ " : ");
+		System.out.println(equipmentList.toString());
+		return equipmentList;
+	}
+	
+	//returns equipment list based on the passed location and the department.
+	//both department and equipment must match for an equipment to be returned.
+	@GetMapping(value = "getEquipmentForLocationAndDepartment/{location}/{department}")
+	public List<Equipment> getEquipmentForLocationAndDepartment(@PathVariable String location, 
+			@PathVariable int department	){
+		List<Equipment> lEquipmentList = equipmentrepo.findByLocation(location);
+		List<Equipment> dEquipmentList = equipmentrepo.findByDepartment(department);
+		List<Equipment> matchingEquipmentList = new ArrayList<Equipment>();
+		for(Equipment e : lEquipmentList) {
+			
+			for(Equipment r : dEquipmentList) {
+				if(e.getAssetId() == r.getAssetId()) {
+					matchingEquipmentList.add(e);
+				}
+			}
+		}
+		
+		if(matchingEquipmentList.isEmpty()) {
+			System.out.println("The matching list is empty");
+		}
+		else {
+			System.out.println("Returing the matching list : " + matchingEquipmentList.toString());
+		}
+		
+		return matchingEquipmentList;
+	}
+	
+	//returns equipment for the given asset id 
+	@GetMapping(value = "getEquipmentForAssetId/{assetId}")
+	public Equipment getEquipmentForAssetId(@PathVariable long assetId){
+		Equipment equipment = equipmentrepo.findByAssetId(assetId);
+		
+		
+		try {
+			System.out.println("Returning equipment : " + equipment.toString() );
+			return equipment;
+		}catch(NullPointerException n){
+			System.out.println("Equipment is  null. The asset id is not found.");
+			return new Equipment();
+		}
+		
+	}
+	
+	//returns equipment for the given serial number.
+	@GetMapping(value = "getEquipmentForSerialNumber/{serialNumber}")
+	public Equipment getEquipmentForSerialNumber(@PathVariable String serialNumber) {
+		Equipment equipment = equipmentrepo.findBySerialNumber(serialNumber);
+		
+		try {
+			System.out.println("Returning equipment : " + equipment.toString() );
+			return equipment;
+		}catch(NullPointerException n) {
+			System.out.println("Equipment is  null. The asset id is not found.");
+			return new Equipment();
+		}
+	}
+	
+	//returns equipment purchased between passed dates
+	//date formats must be in the format 'yyy-MM-dd'
+	@GetMapping(value = "getEquipmentForTimePeriod/{s}/{en}")
+	public List<Equipment> getEquipmentForTimePeriod (@PathVariable String s, @PathVariable String en){
+		
+		Date start = new Date();
+		try {
+			start = new SimpleDateFormat("yyyy-MM-dd").parse(s);
+		} catch (ParseException e1) {
+			System.err.println("Error whe parsing start string to date");
+			e1.printStackTrace();
+		}
+		Date end = new Date();
+		try {
+			end = new SimpleDateFormat("yyyy-MM-dd").parse(en);
+		}catch (ParseException e1) {
+			System.err.println("Error whe parsing end string to date");
+			e1.printStackTrace();
+		}
+		
+		
+		
+		List<Equipment> equipmentList = equipmentrepo.findAll();
+		List<Equipment> sortedEquipment = new ArrayList<Equipment>();
+		
+		for(Equipment e: equipmentList) {
+			Date purchaseDate = e.getPurchaseDate();
+			//adds equipment purchased between start and end
+			if( (purchaseDate.after(start) && purchaseDate.before(end)) ) {
+				sortedEquipment.add(e);
+			}
+		}
+		
+		return sortedEquipment;
+	}
+	
+	@GetMapping(value = "getUnderWarrantyEquipment")
+	public List<Equipment> getUnderWarrantyEquipment(){
+		Date currentDate = new Date();
+		List<Equipment> allEquipment = equipmentrepo.findAll();
+		List<Equipment> underWarrantyList = new ArrayList<Equipment>();
+		
+		for(Equipment e : allEquipment) {
+			int warrantyMonths = e.getWarrantyMonths();
+			Date purchaseDate = e.getPurchaseDate();
+			
+			Date warrantyEndDate = calculateWarrantyEndDate(purchaseDate, warrantyMonths);
+			if(currentDate.before(warrantyEndDate)) {
+				underWarrantyList.add(e);
+			}
+			
+		}
+		
+		return underWarrantyList;
+	}
+	
+	public static Calendar toCalendar(Date date){ 
+		  Calendar cal = Calendar.getInstance();
+		  cal.setTime(date);
+		  return cal;
+	}
+	
+	public static Date toDate(Calendar calender) {
+		Date date = new Date();
+		date = calender.getTime();
+		return date;
+	}
+	
+	public static Date calculateWarrantyEndDate (Date purchaseDate, int warrantyMonths) {
+		Calendar calenderPurchaseDate, calenderWarrantyEndDate ;
+		calenderPurchaseDate = toCalendar(purchaseDate);
+		System.out.println("Calender type date: " + calenderPurchaseDate.toString());
+		calenderWarrantyEndDate  = calenderPurchaseDate;
+		calenderWarrantyEndDate.add(Calendar.MONTH, warrantyMonths);
+		Date warrantyEndDate = toDate(calenderWarrantyEndDate);
+		
+		System.out.println("Warranty end date: " + warrantyEndDate);
+		return warrantyEndDate;
+				
+	}
 
 }
