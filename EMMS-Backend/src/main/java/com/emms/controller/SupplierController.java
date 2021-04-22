@@ -208,5 +208,13 @@ public class SupplierController {
 		return supplier;
 		
 	}
+	
+	@GetMapping(value = "getSupplierNameForId/{id}")
+	public String getSupplierNameForId(@PathVariable int  id) {
+		Supplier supplier = new Supplier();
+		supplier =  supplierRepository.findBySupplierId(id);
+		
+		return supplier.getSupplierName();
+	}
 
 }

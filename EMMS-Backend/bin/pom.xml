@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.emms</groupId>
 	<artifactId>EMMS-Backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>EMMS-Backend</name>
 	<description>Backend application for emms</description>
 	<properties>

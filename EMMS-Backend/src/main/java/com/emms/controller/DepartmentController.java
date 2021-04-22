@@ -109,5 +109,13 @@ public class DepartmentController {
 		//departmentRepo.deleteById(did);
 		return did;
 	}
+	
+	@GetMapping(value = "getDepartmentNameById/{did}")
+	public String  getDepartmentNameById(@PathVariable int did) {
+		Department department = new Department();
+		department = departmentRepo.findByDid(did);
+		
+		return department.getDepartmentName();
+	}
 
 }

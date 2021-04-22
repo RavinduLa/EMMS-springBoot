@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.emms.model.Supplier;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
-
+	
+	Supplier findBySupplierId(int id); 
 }

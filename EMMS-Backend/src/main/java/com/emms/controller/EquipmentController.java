@@ -165,9 +165,19 @@ public class EquipmentController {
 	public long getAssetCount() {
 		long count = equipmentrepo.count();
 		System.out.println("Equipment count: " + count);
-		return count;
-		
-		
+		return count;	
+	}
+	
+	@GetMapping(value = "underWarrantyCount")
+	public int getUnderWarrantyAssetCount() {
+		List<Equipment> underWarrantyEList = getUnderWarrantyEquipment();
+		return underWarrantyEList.size();
+	}
+	
+	@GetMapping(value = "noWarrantyCount")
+	public int getWarrantyVoidAssetCount() {
+		List<Equipment> noWarrantyEList = getNoWarrantyEquipment();
+		return noWarrantyEList.size();
 	}
 	
 	//returns the equipment list based on the given supplier id
@@ -175,6 +185,18 @@ public class EquipmentController {
 	public List<Equipment> getEquipmentBySupplier (@PathVariable int  id){
 		List<Equipment> equipmentList = equipmentrepo.findBySupplier(id);
 		System.out.println("Returning equipments for supplier,  "+ id+ " : ");
+		
+		for(Equipment e : equipmentList) {
+			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
+			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
+		}
+		
+		
 		System.out.println(equipmentList.toString());
 		return equipmentList;
 	}
@@ -185,16 +207,39 @@ public class EquipmentController {
 		
 		List<Equipment> equipmentList = equipmentrepo.findByLocation(location.toLowerCase());
 		System.out.println("Returning equipments for location,  "+ location+ " : ");
+		
+		for(Equipment e : equipmentList) {
+			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
+			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
+		}
+		
+		
 		System.out.println(equipmentList.toString());
 		return equipmentList;
 	}
 	
 	//returns equipment based on the given department
-	@GetMapping(value = "getEquipmentForDepartment/{dept}")
+	@GetMapping(value = "/getEquipmentForDepartment/{dept}")
 	public List<Equipment> getEquipmentForDepartment(@PathVariable int dept){
 		
 		List<Equipment> equipmentList = equipmentrepo.findByDepartment(dept);
 		System.out.println("Returning equipments for department,  "+ dept+ " : ");
+		
+		for(Equipment e : equipmentList) {
+			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
+			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
+		}
+		
 		System.out.println(equipmentList.toString());
 		return equipmentList;
 	}
@@ -309,7 +354,49 @@ public class EquipmentController {
 			
 		}
 		
+		for(Equipment e : underWarrantyList) {
+			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
+			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
+		}
+		
 		return underWarrantyList;
+	}
+	
+	@GetMapping(value = "getNoWarrantyEquipment")
+	public List<Equipment> getNoWarrantyEquipment(){
+		
+		Date currentDate = new Date();
+		List<Equipment> allEquipment = equipmentrepo.findAll();
+		List<Equipment> noWarrantyList = new ArrayList<Equipment>();
+		
+		for(Equipment e : allEquipment) {
+			int warrantyMonths = e.getWarrantyMonths();
+			Date purchaseDate = e.getPurchaseDate();
+			
+			Date warrantyEndDate = calculateWarrantyEndDate(purchaseDate, warrantyMonths);
+			if(currentDate.after(warrantyEndDate)) {
+				noWarrantyList.add(e);
+			}
+			
+		}
+		
+		for(Equipment e : noWarrantyList) {
+			int supplierId  = e.getSupplier();
+			int departmentId = e.getDepartment();
+			Date purchaseDate = e.getPurchaseDate();
+			String supplierName = getSupplierNameForDate(supplierId, purchaseDate);
+			String departmentName = getDepartmentNameForDate(departmentId, purchaseDate);
+			e.setSupplierName(supplierName);
+			e.setDepartmentName(departmentName);
+		}
+		
+		return noWarrantyList;
+		
 	}
 	
 	public static Calendar toCalendar(Date date){ 
