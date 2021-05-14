@@ -168,6 +168,34 @@ public class EquipmentController {
 		return count;	
 	}
 	
+	@GetMapping(value = "getDepartmentAssetCount/{did}")
+	public int getDepartmentAssetCount(@PathVariable int did) {
+		List<Equipment> equipmentList = getEquipmentForDepartment(did);
+		return equipmentList.size();
+	}
+	
+	@GetMapping(value="getTypeDeptAssetCount/{did}/{type}")
+	public int getTypeDeptAssetCount (@PathVariable int did,@PathVariable String type) {
+		List<Equipment> equipmentList = getEquipmentForDepartment(did);
+		int count = 0;
+		for(Equipment e: equipmentList) {
+			if(e.getType().equals(type)) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	@GetMapping(value = "getLocationAssetCount/{location}")
+	public int getLocationAssetCount(@PathVariable String location) {
+		List<Equipment> equipmentList = getEquipmentForLocation(location);
+		return equipmentList.size();
+	}
+	@GetMapping(value= "getSupplierAssetCount")
+	public int getSupplierAssetCount(@PathVariable  int id) {
+		List<Equipment> equipmentList = getEquipmentBySupplier(id);
+		return equipmentList.size();
+	}
 	@GetMapping(value = "underWarrantyCount")
 	public int getUnderWarrantyAssetCount() {
 		List<Equipment> underWarrantyEList = getUnderWarrantyEquipment();

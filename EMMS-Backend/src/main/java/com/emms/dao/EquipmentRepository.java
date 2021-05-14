@@ -13,4 +13,5 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 	List<Equipment> findByDepartment(int department);
 	Equipment findByAssetId(long assetId);
 	Equipment findBySerialNumber(String serialNumber);
+	List<Equipment> findByType (String type);
 }
